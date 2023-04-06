@@ -63,6 +63,19 @@ const inputClosePin = document.querySelector('.form__input--pin');
 
 
 // code
+
+// date
+const now = new Date()
+const year = now.getFullYear();
+const date = now.getDate()
+const month = now.getMonth() + 1
+const hour = now.getHours()
+const min = now.getMinutes()
+const dateFunc = function(dateEl){
+  dateEl = `${dateEl}`.padStart(2, 0)
+  return dateEl
+}
+  labelDate.textContent = `${dateFunc(date)}/${dateFunc(month)}/${year}, ${dateFunc(hour)} : ${dateFunc(min)}`;
 // calculate income, withdrawal, and interest
 const calcSummary = function(account){
   // withdrawals
@@ -120,11 +133,11 @@ accounts.forEach(acc => userNames(acc))
 
 // implementing login function
 let currentUser;
+let unSortedMovs;
 const implementingLogin = function(e){
   e.preventDefault()
-
   currentUser = accounts.find(acc => acc.userName === inputLoginUsername.value)
-  console.log(currentUser)
+  unSortedMovs = [...currentUser?.movements]
 
   if(currentUser?.pin === Number(inputLoginPin.value)){
     // change welcome tag && display ui
@@ -173,23 +186,92 @@ btnTransfer.addEventListener('click', function(e){
           ){
             // 2. add negative to the sender's account
             currentUser?.movements.push(Number(-transferAmount))
+            // 3. update ui
             updateUI(currentUser)
 
-            // 3. add positive to the receipient's account
-            
+            // 4. add positive to the receipient's account
             receipient?.movements.push(Number(transferAmount))
-
             inputTransferTo.value = inputTransferAmount.value =''
             inputTransferAmount.blur()
           }
           
 
   
-  // 3. update ui
+  
+})
+
+let sortState = false
+btnSort.addEventListener('click',  function(e){  
+  // if(sortState === false){  
+  //     sortState = true;
+  //   displayMovements(currentUser.movements.sort((a, b) => a - b))
+  //   console.log(unSortedMovs, currentUser.movements,'when sorted state is false')
+  // }else if(sortState === true){
+  //   displayMovements(unSortedMovs)
+  //   console.log(unSortedMovs, currentUser.movements,'when sorted state is true')
+  //   sortState = false
+  // }
+  console.log(sortState, 'before ternary opeator')
+
+  // rewriting the if block above with ternary operator
+  // displayMovements(`${sortState ? (unSortedMovs, !sortState) : (currentUser.movements.sort((a, b) => a - b), !sortState)}`)
+  sortState
+  ?
+    (
+      displayMovements(unSortedMovs),
+      sortState = false
+    )
+  :
+    (
+      displayMovements(currentUser.movements.sort((a, b) => a - b)),
+      sortState = true, 
+      console.log(sortState, 'when its true')
+    )
+  
+   console.log(sortState, 'after ternary operator')
 })
 
 
+btnLoan.addEventListener('click', function(e){
+  e.preventDefault()
+  const loanAmt = Number(inputLoanAmount.value)
+  const loanPercentage = (loanAmt * 10)/100
 
+  // if (currentUser.balance > loanPercentage) {
+  //   currentUser.movements.push(loanAmt)
+  //   updateUI(currentUser)
+  //   inputLoanAmount.value = ''
+  // }else{
+  //      inputLoanAmount.value = ''
+  // }
+
+  currentUser.balance > loanPercentage
+  ? (
+     currentUser.movements.push(loanAmt),
+     updateUI(currentUser),
+     inputLoanAmount.value = ''
+    )
+  : inputLoanAmount.value = ''
+})
+
+btnClose.addEventListener('click', function(e){
+  e.preventDefault();
+  console.log(accounts)
+
+  let accountIndex = accounts.findIndex(acc => 
+  currentUser?.userName === inputCloseUsername.value &&
+  acc.userName === currentUser.userName &&
+  acc.pin == Number(inputClosePin.value))
+  console.log(accountIndex, 'account Index')
+
+  if( currentUser?.userName === inputCloseUsername.value ) {
+    accounts.splice(accountIndex, 1)
+    containerApp.style.opacity = 0
+  }
+
+  console.log(accounts)
+
+})
 
 
 /////////////////////////////////////////////////

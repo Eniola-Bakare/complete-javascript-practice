@@ -63,6 +63,23 @@ const inputClosePin = document.querySelector('.form__input--pin');
 
 
 // code
+// timer
+let timeDown;
+const timer = function(){
+  let time = 10;
+
+  timeDown = setInterval(()=> {
+      const min = `${Math.trunc(time /60)}`.padStart(2, 0);
+      const sec = `${time % 60}`.padStart(2, 0)
+      if(time === 0){
+              clearInterval(timeDown)
+              containerApp.style.opacity = 0
+              labelWelcome.textContent = 'Log in to get started'
+            }
+      time--
+      labelTimer.textContent = `${min}:${sec}`    
+  }, 1000)
+}
 
 // date
 const now = new Date()
@@ -152,9 +169,9 @@ const implementingLogin = function(e){
 
     // // display summaries
     // calcSummary(currentUser)
-
+    clearInterval(timeDown)
+    timer()
     updateUI(currentUser)
-    
   }
   inputLoginUsername.value = inputLoginPin.value = '';
   inputLoginPin.blur()
@@ -195,13 +212,14 @@ btnTransfer.addEventListener('click', function(e){
             inputTransferAmount.blur()
           }
           
-
-  
-  
+          clearInterval(timeDown)
+          timer()
 })
 
 let sortState = false
-btnSort.addEventListener('click',  function(e){  
+btnSort.addEventListener('click',  function(e){ 
+  clearInterval(timeDown)
+  timer() 
   // if(sortState === false){  
   //     sortState = true;
   //   displayMovements(currentUser.movements.sort((a, b) => a - b))
@@ -211,7 +229,6 @@ btnSort.addEventListener('click',  function(e){
   //   console.log(unSortedMovs, currentUser.movements,'when sorted state is true')
   //   sortState = false
   // }
-  console.log(sortState, 'before ternary opeator')
 
   // rewriting the if block above with ternary operator
   // displayMovements(`${sortState ? (unSortedMovs, !sortState) : (currentUser.movements.sort((a, b) => a - b), !sortState)}`)
@@ -224,16 +241,15 @@ btnSort.addEventListener('click',  function(e){
   :
     (
       displayMovements(currentUser.movements.sort((a, b) => a - b)),
-      sortState = true, 
-      console.log(sortState, 'when its true')
+      sortState = true
     )
-  
-   console.log(sortState, 'after ternary operator')
 })
 
 
 btnLoan.addEventListener('click', function(e){
   e.preventDefault()
+  clearInterval(timeDown)
+  timer()
   const loanAmt = Number(inputLoanAmount.value)
   const loanPercentage = (loanAmt * 10)/100
 
@@ -245,7 +261,7 @@ btnLoan.addEventListener('click', function(e){
   //      inputLoanAmount.value = ''
   // }
 
-  currentUser.balance > loanPercentage
+  currentUser.balance > loanPercentage && loanAmt !== 0 || ''
   ? (
      currentUser.movements.push(loanAmt),
      updateUI(currentUser),
@@ -256,21 +272,16 @@ btnLoan.addEventListener('click', function(e){
 
 btnClose.addEventListener('click', function(e){
   e.preventDefault();
-  console.log(accounts)
 
   let accountIndex = accounts.findIndex(acc => 
   currentUser?.userName === inputCloseUsername.value &&
   acc.userName === currentUser.userName &&
   acc.pin == Number(inputClosePin.value))
-  console.log(accountIndex, 'account Index')
 
   if( currentUser?.userName === inputCloseUsername.value ) {
     accounts.splice(accountIndex, 1)
     containerApp.style.opacity = 0
   }
-
-  console.log(accounts)
-
 })
 
 

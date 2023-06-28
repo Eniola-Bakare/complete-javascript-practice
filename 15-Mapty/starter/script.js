@@ -11,14 +11,51 @@ const inputDuration = document.querySelector('.form__input--duration');
 const inputCadence = document.querySelector('.form__input--cadence');
 const inputElevation = document.querySelector('.form__input--elevation');
 
-let mapEvent, map;
 
+class Workouts {
+  constructor(coords, distance, duration) {
+    this.coords = coords; //[lat, lng]
+    this.distance = distance;
+    this.duration = duration;
+  }
+}
 
-// refactoring into class
+class Running extends Workouts {
+  type = 'running'
+  constructor(coords, distance, duration, cadence){
+    super(coords, distance, duration)
+    this.cadence =cadence
+    this.calcPace();
+  }
+
+  calcPace (){
+    this.pace = this.duration / this.distance;
+    return this.pace
+  }
+}
+class Cycling extends Workouts {
+  type = 'cycling'
+  constructor(coords, distance, duration, elevationGain){
+    super(coords, distance, duration)
+    this.elevationGain = elevationGain;
+    this.calcSpeed();
+  }
+
+  calcSpeed () {
+    this.speed = this.distance / (this.duration / 60)
+    return this.speed
+  }
+}
+
+// const running1 = new Running([5.4444, 3.333], 12, 30, 23)
+// const cycling1 = new Cycling([5.4444, 3.333], 12, 30, 23)
+
+// PROJECT ARCHITECTURE
 
 class App {
   #map;
   #mapEvent;
+  #workouts = []
   constructor(){
     this._getPosition();
     form.addEventListener('submit', this._newWorkout.bind(this))
@@ -55,27 +92,68 @@ class App {
       inputDistance.focus()
   }
   _newWorkout(e){
+    
     e.preventDefault()
-  
-      // clear input duration
-      inputDuration.value = inputCadence.value = inputDistance.value = inputElevation.value = ''
-  
-      // displaying maker
-      const {lat, lng} = this.#mapEvent
-        L.marker([lat, lng]).addTo(this.#map)
-        .bindPopup(L.popup({
-          maxWidth: 250,
-          minWIdth: 100,
-          autoClose: false,
-          closeOnClick: false,
-          className: 'running-popup'
-        }))
-        .setPopupContent('Running!!')
-        .openPopup();
+    const validateInput = (...inputs) =>
+    inputs.every(inp => Number.isFinite(inp))
+    const allPositive = (...inputs) => inputs.every(inp => inp > 0)
+    
+    
+    // Creating new objects from input
+    const type = inputType.value
+    const duration = +inputDuration.value
+    const distance = +inputDistance.value
+    const {lat, lng} = this.#mapEvent
+    let workout;
 
+      if (type === 'running') {
+        const cadence = +inputCadence.value
+
+        if(!validateInput(cadence, distance, duration) ||
+          !allPositive(cadence, distance, duration)
+          )
+          return alert('Inputs have to be positive numbers')
+
+        workout = new Running ([lat, lng], distance, duration, cadence)
+        this.#workouts.push(workout)
+
+      }
+
+      if (type === 'cycling') {
+        const elevationGain = +inputElevation.value
+
+        if (!validateInput(elevationGain, distance, duration) ||
+            !allPositive(distance, duration)
+        )
+          return alert('Inputs have to be positive numbers')
+
+          workout = new Cycling ([lat, lng], distance, duration, elevationGain)
+          this.#workouts.push(workout)
+      }
+
+      // displaying maker
+      this._renderMaker(workout, lat, lng)
+       
+
+        // clear input duration
+        inputDuration.value = inputCadence.value = inputDistance.value = inputElevation.value = ''
         // adding hide class to the form after marking location on the map
         form.classList.add('hidden')
+        
   }
+  _renderMaker(workout, lat, lng){
+    L.marker(workout.coords).addTo(this.#map)
+    .bindPopup(L.popup({
+      maxWidth: 250,
+      minWIdth: 100,
+      autoClose: false,
+      closeOnClick: false,
+      className: `${workout.type}-popup`
+    }))
+    .setPopupContent(inputType.value === 'running' ? 'Running' : 'Cycling')
+    .openPopup();
+  }
+
 }
   const app = new App()
 

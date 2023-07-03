@@ -133,31 +133,105 @@ TEST DATA: Images in the img folder. Test the error handler by passing a wrong i
 */
 
 // Solution attempt
-const createImage = function(imgPath){
-  return new Promise(function (resolve, reject){
-    const imgDiv = document.createElement('img')
-    imgDiv.src = imgPath
-    imgDiv.addEventListener('load', resolve),
-    reject
-  })
-}
+// const createImage = function(imgPath){
+//   return new Promise(function (resolve, reject){
+//     const imgDiv = document.createElement('img')
+//     imgDiv.src = imgPath
+//     imgDiv.addEventListener('load', resolve),
+//     reject
+//   })
+// }
 
-createImage('./img/img-1.jpg')
-  .then(res =>
-    imgContainer.insertAdjacentElement('afterbegin', res.target
-  ))
-  .then(res => {
-    setTimeout(function(){
-      imgContainer.style.display = 'none'
-      res.src = './img/img-2.jpg'      
-    }, 2000)
-  })
-  .then(res => {
-    setTimeout(function () {
-      console.log('my timeee')
-      imgContainer.style.display = 'flex'
-    }, 4000)
-  })
-  .catch(err => console.log(`${err} 'I can\'t find you image'`))
+// createImage('./img/img-1.jpg')
+//   .then(res =>
+//     imgContainer.insertAdjacentElement('afterbegin', res.target
+//   ))
+//   .then(res => {
+//     setTimeout(function(){
+//       imgContainer.style.display = 'none'
+//       res.src = './img/img-2.jpg'      
+//     }, 2000)
+//   })
+//   .then(res => {
+//     setTimeout(function () {
+//       console.log('my timeee')
+//       imgContainer.style.display = 'flex'
+//     }, 4000)
+//   })
+//   .catch(err => console.log(`${err} 'I can\'t find you image'`))
 
- 
+  
+  
+  // Consuming promises with Asyn/Await
+  // const REVERSEGEOCODING = async function(lat1, lng1, lat2, lng2, lat3, lng3){
+  //  try{
+  //    const res1 = await fetch(`https://geocode.xyz/${lat1},${lng1}?geoit=json&auth=316658685551974991932x45971`)
+  //    const res2 = await fetch(`https://geocode.xyz/${lat2},${lng2}?geoit=json&auth=316658685551974991932x45971`)
+  //    const res3 = await fetch(`https://geocode.xyz/${lat3},${lng3}?geoit=json&auth=316658685551974991932x45971`)
+
+  //   const data1 = await res1.json()
+  //   const data2 = await res2.json()
+  //   const data3= await res3.json()
+  //   console.log(data1.country, '----------------------COUNTRY1')
+  //   console.log(data2.country, '----------------------------COUNTRY 2')
+  //   console.log(data3.country, '----------------------------COUNTRY 3')
+
+  //   countriesContainer.insertAdjacentText( "afterend",`You are in ${data1.city}, ${data1.country}`)
+  //   }catch(err) {
+  //     console.log(`Error, ${err.message}`)
+    
+  //   }
+  //   countriesContainer.style.opacity = 1
+  // }
+
+// working with promise all
+// const REVERSEGEOCODING = async function(lat1, lng1, lat2, lng2, lat3, lng3){
+//   try{
+//     const promiseALlArr = await Promise.all([
+//       fetch(`https://geocode.xyz/${lat1},${lng1}?geoit=json&auth=316658685551974991932x45971`),
+//       fetch(`https://geocode.xyz/${lat2},${lng2}?geoit=json&auth=316658685551974991932x45971`),
+//       fetch(`https://geocode.xyz/${lat3},${lng3}?geoit=json&auth=316658685551974991932x45971`)
+//   ])
+
+//   console.log(promiseALlArr.map(eachData => eachData))
+  
+//   }catch(err) {
+//      console.log(`Error, ${err.message}`)
+//    }
+//    countriesContainer.style.opacity = 1
+//  }
+
+
+
+//   REVERSEGEOCODING(19.037, 72.873, -33.933, 18.474, 6.5110016, 3.391488);
+
+// Promise selectors
+// Promise.all([
+//   Promise.resolve('Resolved ------------1'),
+//   Promise.reject('ERROR ------------1'),
+//   Promise.resolve('ERROR ------------1')
+// ])
+// .then(res => console.log(res))
+// .catch(err => console.error(`-------------${err}`))
+// Promise.race([
+//   Promise.resolve('Resolved ------------1'),
+//   Promise.reject('ERROR ------------1'),
+//   Promise.resolve('RESOLVED ------------2')
+// ])
+// .then(res => console.log(res))
+// Promise.allSettled([
+//   Promise.resolve('Resolved ------------1'),
+//   Promise.reject('ERROR ------------1'),
+//   Promise.resolve('RESOLVED ------------2')
+// ])
+// .then(res => console.log(res))
+// .catch(err => console.error(`-------------${err}`))
+// Promise.any([
+//   Promise.reject('Resolved ------------1'),
+//   Promise.reject('ERROR ------------1'),
+//   Promise.resolve('RESOLVED ------------2')
+// ])
+// .then(res => console.log(res))
+// .catch(err => console.error(`-------------${err}`))
+
+

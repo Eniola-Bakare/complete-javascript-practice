@@ -1,5 +1,12 @@
+import { after } from 'lodash-es';
+import icons from 'url:../img/icons.svg';
+import 'core-js/stable';
+import 'regenerator-runtime/runtime';
+
+
 const recipeContainer = document.querySelector('.recipe');
 const introMessage = document.querySelector('.message');
+
 
 const timeout = function (s) {
   return new Promise(function (_, reject) {
@@ -19,11 +26,27 @@ const timeout = function (s) {
 // .then(res => res.json())
 // .then(data => console.log(data))
 
+function showSPinner(parentEL){
+  let html = `
+      <div class="spinner">
+      <svg>
+        <use href="${icons}#icon-loader"></use>
+      </svg>
+    </div>
+  `
+  parentEL.innerHTML = '';
+  return parentEL.insertAdjacentHTML('afterbegin', html)
+}
+
 const showReceipe = async function(){
+  let id = window.location.hash.slice(1);
+  // console.log(id)
+  if(!id) return
   try{
-    const res = await fetch('https://forkify-api.herokuapp.com/api/v2/recipes/5ed6604591c37cdc054bc886')
-    const data = await res.json()
-    // console.log(data, res)
+    showSPinner(recipeContainer)
+    // const res = await fetch(`https://forkify-api.herokuapp.com/api/v2/recipes/${id}`)
+    // const data = await res.json()
+    // // console.log(data, res)
     if(!res.ok) throw new Error(`${data.message} Error: ${res.status}`)
     
     let { recipe } = data.data
@@ -39,101 +62,103 @@ const showReceipe = async function(){
       cookingTime: recipe.cooking_time 
     }
     // rendering the recipe
-    const html = `
-      <figure class="recipe__fig">
-        <img src="${recipe.image}" alt="${recipe.title}" class="recipe__img" />
-        <h1 class="recipe__title">
-          <span>${recipe.title}</span>
-        </h1>
-      </figure>
+     console.log(recipe)
+      let html = `
+        <figure class="recipe__fig">
+          <img src="${recipe.image}" alt="${recipe.title}" class="recipe__img" />
+          <h1 class="recipe__title">
+            <span>${recipe.title}</span>
+          </h1>
+        </figure>
 
-      <div class="recipe__details">
-        <div class="recipe__info">
-          <svg class="recipe__info-icon">
-            <use href="src/img/icons.svg#icon-clock"></use>
-          </svg>
-          // <span class="recipe__info-data recipe__info-data--minutes">${recipe.cookingTime}</span>
-          <span class="recipe__info-text">minutes</span>
-        </div>
-        <div class="recipe__info">
-          <svg class="recipe__info-icon">
-            <use href="src/img/icons.svg#icon-users"></use>
-          </svg>
-          <span class="recipe__info-data recipe__info-data--people">${recipe.serving}</span>
-          <span class="recipe__info-text">servings</span>
-
-          <div class="recipe__info-buttons">
-            <button class="btn--tiny btn--increase-servings">
-              <svg>
-                <use href="src/img/icons.svg#icon-minus-circle"></use>
-              </svg>
-            </button>
-            <button class="btn--tiny btn--increase-servings">
-              <svg>
-                <use href="src/img/icons.svg#icon-plus-circle"></use>
-              </svg>
-            </button>
+        <div class="recipe__details">
+          <div class="recipe__info">
+            <svg class="recipe__info-icon">
+              <use href="${icons}#icon-clock"></use>
+            </svg>
+            <span class="recipe__info-data recipe__info-data--minutes">${recipe.cookingTime}</span>
+            <span class="recipe__info-text">minutes</span>
           </div>
-        </div>
+          <div class="recipe__info">
+            <svg class="recipe__info-icon">
+              <use href="${icons}#icon-users"></use>
+            </svg>
+            <span class="recipe__info-data recipe__info-data--people">${recipe.serving}</span>
+            <span class="recipe__info-text">servings</span>
 
-        <div class="recipe__user-generated">
-          <svg>
-            <use href="src/img/icons.svg#icon-user"></use>
-          </svg>
-        </div>
-        <button class="btn--round">
-          <svg class="">
-            <use href="src/img/icons.svg#icon-bookmark-fill"></use>
-          </svg>
-        </button>
-      </div>
-
-      <div class="recipe__ingredients">
-        <h2 class="heading--2">Recipe ingredients</h2>
-        <ul class="recipe__ingredient-list"> ${
-          recipe.ingredients.map(eachIngredient => {
-            `
-              <li class="recipe__ingredient">
-                <svg class="recipe__icon">
-                  <use href="src/img/icons.svg#icon-check"></use>
+            <div class="recipe__info-buttons">
+              <button class="btn--tiny btn--increase-servings">
+                <svg>
+                  <use href="${icons}#icon-minus-circle"></use>
                 </svg>
-                <div class="recipe__quantity">${eachIngredient.quantity}</div>
-                <div class="recipe__description">
-                  <span class="recipe__unit">${eachIngredient.unit}</span>
-                  ${description}
-                </div>
-              </li>
-            `
-          })
-        }
-        </ul>
-      </div>
+              </button>
+              <button class="btn--tiny btn--increase-servings">
+                <svg>
+                  <use href="${icons}#icon-plus-circle"></use>
+                </svg>
+              </button>
+            </div>
+          </div>
 
-      <div class="recipe__directions">
-        <h2 class="heading--2">How to cook it</h2>
-        <p class="recipe__directions-text">
-          This recipe was carefully designed and tested by
-          <span class="recipe__publisher">${recipe.publisher}</span>. Please check out
-          directions at their website.
-        </p>
-        <a
-          class="btn--small recipe__btn"
-          href="${recipe.sourceUrl}"
-          target="_blank"
-        >
-          <span>Directions</span>
-          <svg class="search__icon">
-            <use href="src/img/icons.svg#icon-arrow-right"></use>
-          </svg>
-        </a>
-      </div>`;
-      introMessage.classList.remove('message')
+          <div class="recipe__user-generated">
+            <svg>
+              <use href="${icons}#icon-user"></use>
+            </svg>
+          </div>
+          <button class="btn--round">
+            <svg class="">
+              <use href="${icons}#icon-bookmark-fill"></use>
+            </svg>
+          </button>
+        </div>
+
+        <div class="recipe__ingredients">
+          <h2 class="heading--2">Recipe ingredients</h2>
+          <ul class="recipe__ingredient-list">
+           ${recipe.ingredients.map(ing => {
+              return ` 
+                  <li class="recipe__ingredient">
+                  <svg class="recipe__icon">
+                    <use href="${icons}#icon-check"></use>
+                  </svg>
+                  <div class="recipe__quantity">${ing?.quantity}</div>
+                  <div class="recipe__description">
+                    <span class="recipe__unit">${ing?.unit}</span>
+                    ${ing.description}
+                  </div>
+                </li>
+              `
+              }).join('')
+            }
+          </ul>
+        </div>
+
+        <div class="recipe__directions">
+          <h2 class="heading--2">How to cook it</h2>
+          <p class="recipe__directions-text">
+            This recipe was carefully designed and tested by
+            <span class="recipe__publisher">${recipe.publisher}</span>. Please check out
+            directions at their website.
+          </p>
+          <a
+            class="btn--small recipe__btn"
+            href="${recipe.sourceUrl}"
+            target="_blank"
+          >
+            <span>Directions</span>
+            <svg class="search__icon">
+              <use href="${icons}#icon-arrow-right"></use>
+            </svg>
+          </a>
+        </div>
+   `
+      recipeContainer.innerHTML = '';
       recipeContainer.insertAdjacentHTML('afterbegin', html)
-
-  }catch(err){
-    // alert(err)
+      
+    }catch(err){
+      // alert(err)
+    }
   }
-}
-
-
+  const eventArr = ['hashchange', 'load']
+  eventArr.forEach(event => window.addEventListener(event, showReceipe));
 // showReceipe()

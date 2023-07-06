@@ -9,10 +9,14 @@
   "author": "EniolaOluwa",
   "license": "ISC",
   "dependencies": {
+    "core-js": "^3.31.1",
+    "regenerator": "^0.14.10",
     "sass": "^1.26.10"
   },
   "devDependencies": {
     "@parcel/transformer-sass": "^2.9.3",
-    "parcel": "^2.9.3"
+    "parcel": "^2.9.3",
+    "process": "^0.11.10",
+    "url": "^0.11.1"
   }
 }

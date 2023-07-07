@@ -1,5 +1,5 @@
 import icons from 'url:../../img/icons.svg';
-import recipeView from '../../../../final/src/js/views/recipeView';
+import {Fraction} from 'fractional'
 
 class RecipeView {
   _parentEl = document.querySelector('.recipe');
@@ -7,7 +7,7 @@ class RecipeView {
 
 
   render(data){
-    this.data = data
+    this._data = data
     const html = this._generateHtml();
     this._clear()
     this._parentEl.insertAdjacentHTML('afterbegin', html)
@@ -17,7 +17,7 @@ class RecipeView {
     this._parentEl.innerHTML = ''
   }
 
-  renderSpinner(){
+  renderSpinner (){
       let html = `
           <div class="spinner">
           <svg>
@@ -26,7 +26,7 @@ class RecipeView {
         </div>
       `
       this._clear()
-      return this._parentEL.insertAdjacentHTML('afterbegin', html)    
+       this._parentEl.insertAdjacentHTML('afterbegin', html)   
   }
 
   _generateHtml(){
@@ -88,9 +88,9 @@ class RecipeView {
                 <svg class="recipe__icon">
                   <use href="${icons}#icon-check"></use>
                 </svg>
-                <div class="recipe__quantity">${ing?.quantity}</div>
+                <div class="recipe__quantity">${ing.quantity ? new Fraction(ing?.quantity).toString() : ''}</div>
                 <div class="recipe__description">
-                  <span class="recipe__unit">${ing?.unit}</span>
+                  <span class="recipe__unit">${ing.unit }</span>
                   ${ing.description}
                 </div>
               </li>
@@ -121,7 +121,5 @@ class RecipeView {
       `
   }
 }
-console.log(Re
-  )
 
 export default new RecipeView()

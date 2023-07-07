@@ -1,10 +1,10 @@
 import * as model from './model.js'
-import recipeView from './views/recipeView.js'
+import recipeView from './views/recipeView'
 
 
-import { after } from 'lodash-es';
-import 'core-js/stable';
-import 'regenerator-runtime/runtime';
+// import { after } from 'lodash-es';
+// import 'core-js/stable';
+// import 'regenerator-runtime/runtime';
 
 
 const recipeContainer = document.querySelector('.recipe');
@@ -22,24 +22,17 @@ const timeout = function (s) {
 // https://forkify-api.herokuapp.com/v2
 
 ///////////////////////////////////////
-// console.log('Ehn')
-// console.log('Oka')
-
-// fetch('https://forkify-api.herokuapp.com/api/v2/recipes/5ed6604591c37cdc054bc886')
-// .then(res => res.json())
-// .then(data => console.log(data))
 
 const controlRecipe = async function(){
   try{
     const id = window.location.hash.slice(1);
     if(!id) return
-
+    
     // Load spinner
     recipeView.renderSpinner()
 
     // Load Recipe
     await model.loadRecipe(id);
-    console.log(id, '-----------------id')
     
     // rendering the recipe
     recipeView.render(model.state.recipe)
@@ -52,4 +45,4 @@ const controlRecipe = async function(){
   }
   const eventArr = ['hashchange', 'load']
   eventArr.forEach(event => window.addEventListener(event, controlRecipe));
-controlRecipe()
+// controlRecipe()

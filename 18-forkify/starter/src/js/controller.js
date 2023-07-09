@@ -29,12 +29,17 @@ const controlRecipe = async function(){
     // rendering the recipe
     recipeView.render(model.state.recipe)
 
-     console.log(recipe)
       
-    }catch(err){
+    } catch (err){
       // alert(err)
+      console.log(err)
+      recipeView.renderError()
     }
   }
-  const eventArr = ['hashchange', 'load']
-  eventArr.forEach(event => window.addEventListener(event, controlRecipe));
-// controlRecipe()
+
+      // Design Patterns in programming are standard solutions to certain kinds of problems.
+      // Publisher ~ Subscriber  design pattern
+const init = function (){
+  recipeView.addHandlerRender(controlRecipe)
+}
+init()

@@ -14,7 +14,7 @@ export const loadRecipe = async function(id) {
   try{
 
     // // To fetch data
-    const data = await getJSON(`${API_URL}${id}`)
+    // const data = await getJSON(`${API_URL}${id}`)
 
     // save data as state
     const { recipe } = data.data;
@@ -56,5 +56,3 @@ export const loadSearchResult = async function(query){
     throw err;
   }
 }
-
-loadSearchResult('pizza')

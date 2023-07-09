@@ -61,7 +61,6 @@ class RecipeView {
   }
 
   addHandlerRender(handler){
-    console.log('youre me')
     const eventArr = ['hashchange', 'load']
     eventArr.forEach(event => window.addEventListener(event, handler));
   }

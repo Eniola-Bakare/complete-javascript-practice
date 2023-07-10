@@ -14,7 +14,7 @@ export const loadRecipe = async function(id) {
   try{
 
     // // To fetch data
-    // const data = await getJSON(`${API_URL}${id}`)
+    const data = await getJSON(`${API_URL}${id}`)
 
     // save data as state
     const { recipe } = data.data;
@@ -29,18 +29,15 @@ export const loadRecipe = async function(id) {
       cookingTime: recipe.cooking_time 
     }
   }catch(err){
-    console.log(err)
     throw err;
   }
 }
-
 
 export const loadSearchResult = async function(query){
   try{
     state.search.query = query;
 
-    // const data = await getJSON(`${API_URL}?search=${query}`);
-    console.log(data.data.recipes)
+    const data = await getJSON(`${API_URL}?search=${query}`);
 
     state.search.result = data.data.recipes.map(rec => {
       return{

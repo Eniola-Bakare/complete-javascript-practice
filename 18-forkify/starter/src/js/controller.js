@@ -1,4 +1,5 @@
 import * as model from './model.js'
+import paginationView from './views/PaginationView.js';
 import ResultsView from './views/ResultsView.js';
 import recipeView from './views/recipeView'
 import searchView from './views/searchView.js';
@@ -50,12 +51,17 @@ const controlRecipe = async function(){
       await model.loadSearchResult(query)
 
         //ResultsView.render( model.state.search.result)
-        ResultsView.render( model.getSearchResultsPage(2))
+        ResultsView.render( model.getSearchResultsPage())
+        paginationView.render(model.state.search)
     } catch (error) {
       throw error;
     }
   }
   
+  const paginationController = (goTo) => {
+    ResultsView.render( model.getSearchResultsPage(goTo))
+        paginationView.render(model.state.search)
+  }
   
   
   // Design Patterns in programming are standard solutions to certain kinds of problems.
@@ -63,5 +69,6 @@ const controlRecipe = async function(){
   const init = function (){
     recipeView.addHandlerRender(controlRecipe)
     searchView.addSearchHandler(controlSearchResults)
+    paginationView.addEventListenerForClicks(paginationController)
 }
 init()

@@ -25,10 +25,8 @@ const controlRecipe = async function(){
     await model.loadRecipe(id);
 
     // rendering the recipe
-    recipeView._clear()
     recipeView.render(model.state.recipe)
 
-      
     } catch (err){
       // alert(err)
       console.log(err)
@@ -50,15 +48,9 @@ const controlRecipe = async function(){
 
       // Load search result
       await model.loadSearchResult(query)
-      
-      // clearing the parent element
-      ResultsView._clear()
 
-      // mapping through, and rendering
-      const resultArray = model.state.search.result.map((eachResult, index, array) => {
-        return ResultsView.render(eachResult)
-      } )
-      if(resultArray.length === 0) return ResultsView.renderError()
+        //ResultsView.render( model.state.search.result)
+        ResultsView.render( model.getSearchResultsPage(2))
     } catch (error) {
       throw error;
     }

@@ -8,15 +8,19 @@ class ResultsView extends Views {
   _message = ''
 
   _generateHtml(){
+    return this._data.map(this._generateHtmlPreview).join()
+  }
+
+  _generateHtmlPreview(eachResult){
     return `
       <li class="preview">
-        <a class="preview__link" href="#${this._data.id}">
+        <a class="preview__link" href="#${eachResult.id}">
           <figure class="preview__fig">
-            <img src="${this._data.image}" alt="Test" />
+            <img src="${eachResult.image}" alt="Test" />
           </figure>
           <div class="preview__data">
-            <h4 class="preview__title">${this._data.title}</h4>
-            <p class="preview__publisher">${this._data.publisher}</p>
+            <h4 class="preview__title">${eachResult.title}</h4>
+            <p class="preview__publisher">${eachResult.publisher}</p>
           </div>
         </a>
       </li>

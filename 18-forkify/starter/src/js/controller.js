@@ -59,10 +59,14 @@ const controlRecipe = async function(){
   }
   
   const paginationController = (goTo) => {
-    ResultsView.render( model.getSearchResultsPage(goTo))
+        ResultsView.render( model.getSearchResultsPage(goTo))
         paginationView.render(model.state.search)
   }
   
+  const controlUpdate = (newServings) => {
+    model.updateServings(newServings)
+    recipeView.render(model.state.recipe)
+  }
   
   // Design Patterns in programming are standard solutions to certain kinds of problems.
   // Publisher ~ Subscriber  design pattern
@@ -70,5 +74,7 @@ const controlRecipe = async function(){
     recipeView.addHandlerRender(controlRecipe)
     searchView.addSearchHandler(controlSearchResults)
     paginationView.addEventListenerForClicks(paginationController)
+    recipeView.addUpdateHandler(controlUpdate)
+    
 }
 init()

@@ -4,7 +4,7 @@ import ResultsView from './views/ResultsView.js';
 import bookmarkView from './views/bookmarkView.js';
 import recipeView from './views/recipeView'
 import searchView from './views/searchView.js';
-
+import addRecipeView from './views/addRecipeView.js';
 
 // https://forkify-api.herokuapp.com/v2
 
@@ -82,6 +82,12 @@ const controlRecipe = async function(){
     bookmarkView.render(model.state.bookmarks)
   }
   
+  const controlAddRecipe = function(newRecipe){
+    console.log(newRecipe)
+    
+  }
+
+
   // Design Patterns in programming are standard solutions to certain kinds of problems.
   // Publisher ~ Subscriber  design pattern
   const init = function (){
@@ -91,5 +97,6 @@ const controlRecipe = async function(){
     paginationView.addEventListenerForClicks(paginationController)
     recipeView.addUpdateHandler(controlUpdate)
     recipeView.addBookmarkHandler(controlBookmarks)
+    addRecipeView.addUploadHandler(controlAddRecipe)
 }
 init()

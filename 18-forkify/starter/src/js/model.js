@@ -1,6 +1,7 @@
 import {asnyc} from 'regenerator-runtime'
 import {API_URL,  RESULTS_PER_PAGE} from './config'
 import { getJSON } from './helpers';
+import { before } from 'lodash-es';
 
 export const state = {
   recipe: { },
@@ -79,7 +80,9 @@ export const updateServings = function(newServings){
 }
 
 
-const peristBook
+const peristBookmarks = function(){
+  localStorage.setItem('bookmark', JSON.stringify(state.bookmarks))
+}
 
 export const addBookmarks = function(recipe){
   state.bookmarks.push(recipe);
@@ -87,6 +90,7 @@ export const addBookmarks = function(recipe){
   if(recipe.id === state.recipe.id) {
     state.recipe.bookmarked = true;
   }
+  peristBookmarks(state.bookmarks)
 } 
 
 export const removeBookMarks = function(id){
@@ -97,4 +101,14 @@ export const removeBookMarks = function(id){
     state.recipe.bookmarked = false;
     state.bookmarks.splice(bookmarkElIndex, 1)
   }
+  peristBookmarks(state.bookmarks)
 }
+
+const init = function(){
+  const storage = localStorage.getItem('bookmark')
+  if(storage){
+    state.bookmarks = JSON.parse(storage)
+  }
+}
+
+init()

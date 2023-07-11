@@ -77,10 +77,15 @@ const controlRecipe = async function(){
     bookmarkView.render(model.state.bookmarks)
     return recipeView.render(model.state.recipe)
   }
+
+  const controlBookmarkLoad = function(){
+    bookmarkView.render(model.state.bookmarks)
+  }
   
   // Design Patterns in programming are standard solutions to certain kinds of problems.
   // Publisher ~ Subscriber  design pattern
   const init = function (){
+    bookmarkView.addHandler(controlBookmarkLoad)
     recipeView.addHandlerRender(controlRecipe)
     searchView.addSearchHandler(controlSearchResults)
     paginationView.addEventListenerForClicks(paginationController)

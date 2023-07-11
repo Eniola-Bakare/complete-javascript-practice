@@ -30,7 +30,6 @@ const controlRecipe = async function(){
 
     } catch (err){
       // alert(err)
-      console.log(err)
       recipeView.renderError()
     }
   }
@@ -51,7 +50,7 @@ const controlRecipe = async function(){
       await model.loadSearchResult(query)
 
         //ResultsView.render( model.state.search.result)
-        ResultsView.render( model.getSearchResultsPage())
+        ResultsView.render( model.getSearchResultsPage(1))
         paginationView.render(model.state.search)
     } catch (error) {
       throw error;
@@ -67,6 +66,15 @@ const controlRecipe = async function(){
     model.updateServings(newServings)
     recipeView.render(model.state.recipe)
   }
+
+  const controlBookmarks = function(){
+    if(!model.state.recipe.bookmarked){
+      model.addBookmarks(model.state.recipe);
+    }else if(model.state.recipe.bookmarked){      
+      model.removeBookMarks(model.state.recipe)
+    }
+    return recipeView.render(model.state.recipe)
+  }
   
   // Design Patterns in programming are standard solutions to certain kinds of problems.
   // Publisher ~ Subscriber  design pattern
@@ -75,6 +83,7 @@ const controlRecipe = async function(){
     searchView.addSearchHandler(controlSearchResults)
     paginationView.addEventListenerForClicks(paginationController)
     recipeView.addUpdateHandler(controlUpdate)
+    recipeView.addBookmarkHandler(controlBookmarks)
     
 }
 init()

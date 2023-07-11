@@ -15,6 +15,15 @@ class RecipeView extends Views {
     eventArr.forEach(event => window.addEventListener(event, handler));
   }
 
+  addBookmarkHandler(handler){
+    this._parentEl.addEventListener('click', function(e){
+      const btn = e.target.closest('.btn--bookmark')
+      if(!btn) return;
+
+      handler()
+    })
+  }
+
   addUpdateHandler(handler){
     this._parentEl.addEventListener('click', function(e){
       const btn = e.target.closest('.btn--increase-servings')
@@ -69,9 +78,9 @@ class RecipeView extends Views {
         <div class="recipe__user-generated">
           
         </div>
-        <button class="btn--round">
+        <button class="btn--round btn--bookmark">
           <svg class="">
-            <use href="${icons}#icon-bookmark-fill"></use>
+            <use href="${icons}#icon-bookmark${this._data.bookmarked ?'-fill' : ''}"></use>
           </svg>
         </button>
       </div>
@@ -79,7 +88,7 @@ class RecipeView extends Views {
       <div class="recipe__ingredients">
         <h2 class="heading--2">Recipe ingredients</h2>
         <ul class="recipe__ingredient-list">
-        ${this._data.ingredients.map(ing => {
+        ${this._data.ingredients?.map(ing => {
             return ` 
                 <li class="recipe__ingredient">
                 <svg class="recipe__icon">

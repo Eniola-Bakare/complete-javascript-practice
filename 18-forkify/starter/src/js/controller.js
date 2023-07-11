@@ -5,6 +5,7 @@ import bookmarkView from './views/bookmarkView.js';
 import recipeView from './views/recipeView'
 import searchView from './views/searchView.js';
 import addRecipeView from './views/addRecipeView.js';
+import { SEC } from './config.js';
 
 // https://forkify-api.herokuapp.com/v2
 
@@ -82,9 +83,33 @@ const controlRecipe = async function(){
     bookmarkView.render(model.state.bookmarks)
   }
   
-  const controlAddRecipe = function(newRecipe){
-    console.log(newRecipe)
-    
+  const controlAddRecipe = async function(newRecipe){
+    try{
+      // load spinner while waiting
+      addRecipeView.renderSpinner()
+      // uploading new recipe
+      await model.uploadRecipe(newRecipe)
+      
+      // render new recipe
+      recipeView.render(model.state.recipe)
+
+      // success message
+      addRecipeView.renderMessage()
+
+      // render bookmarks
+      bookmarkView.render(model.state.bookmarks)
+      console.log(model.state.bookmarks)
+
+      // change id in the url
+      window.history.pushState(null, '', `#${model.state.recipe.id}`)
+      // close form
+      setTimeout(function(){
+        addRecipeView.toggleHandler()
+      }, SEC * 1000)
+
+    }catch(err){
+      addRecipeView.renderError(err.message)
+    }
   }
 
 

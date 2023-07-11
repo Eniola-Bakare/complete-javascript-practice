@@ -4,6 +4,7 @@ import icons from 'url:../../img/icons.svg';
 export default class Views {
   _parentEl;
   _data;
+  _message = 'Start by searching for a recipe or an ingredient. Have fun!'
 
   render(data, render = true){
     if(!data || (Array.isArray(data) && data.length === 0)) return this.renderError();
@@ -45,7 +46,7 @@ export default class Views {
     this._clear()
     this._parentEl.insertAdjacentHTML('afterbegin', html)
   }
-  renderMessage(){
+  renderMessage(message = this._message){
     const html = `
       <div class="message">
         <div>
@@ -53,7 +54,7 @@ export default class Views {
             <use href="src/img/icons.svg#icon-smile"></use>
           </svg>
         </div>
-        <p>Start by searching for a recipe or an ingredient. Have fun!</p>
+        <p>${message}</p>
       </div>
 
     `

@@ -6,23 +6,24 @@ class AddrecipeView extends Views {
   _btnClose = document.querySelector('.btn--close-modal');
   _recipeWindow = document.querySelector('.add-recipe-window');
   _overlay = document.querySelector('.overlay');
+  _message = 'Successfully added your recipe! Have a blast cooking';
 
   constructor(){
     super()
     this._addShowHandler()
     this._addHideHandler()
   }
-  _toggleHandler(){
+  toggleHandler(){
     this._overlay.classList.toggle('hidden')
     this._recipeWindow.classList.toggle('hidden')
   }
 
   _addShowHandler(){
-    this._btnOpen.addEventListener('click', this._toggleHandler.bind(this))
+    this._btnOpen.addEventListener('click', this.toggleHandler.bind(this))
   }
   _addHideHandler(){
-    this._btnClose.addEventListener('click', this._toggleHandler.bind(this))
-    this._overlay.addEventListener('click', this._toggleHandler.bind(this))
+    this._btnClose.addEventListener('click', this.toggleHandler.bind(this))
+    this._overlay.addEventListener('click', this.toggleHandler.bind(this))
   }
 
   addUploadHandler(handler){

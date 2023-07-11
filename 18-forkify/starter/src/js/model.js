@@ -78,6 +78,9 @@ export const updateServings = function(newServings){
   state.recipe.serving = newServings;
 }
 
+
+const peristBook
+
 export const addBookmarks = function(recipe){
   state.bookmarks.push(recipe);
 

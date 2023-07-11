@@ -1,6 +1,7 @@
 import * as model from './model.js'
 import paginationView from './views/PaginationView.js';
 import ResultsView from './views/ResultsView.js';
+import bookmarkView from './views/bookmarkView.js';
 import recipeView from './views/recipeView'
 import searchView from './views/searchView.js';
 
@@ -73,6 +74,7 @@ const controlRecipe = async function(){
     }else if(model.state.recipe.bookmarked){      
       model.removeBookMarks(model.state.recipe.id)
     }
+    bookmarkView.render(model.state.bookmarks)
     return recipeView.render(model.state.recipe)
   }
   
@@ -84,6 +86,5 @@ const controlRecipe = async function(){
     paginationView.addEventListenerForClicks(paginationController)
     recipeView.addUpdateHandler(controlUpdate)
     recipeView.addBookmarkHandler(controlBookmarks)
-    
 }
 init()

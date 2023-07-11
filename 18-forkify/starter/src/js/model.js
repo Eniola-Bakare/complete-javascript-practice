@@ -86,11 +86,11 @@ export const addBookmarks = function(recipe){
   }
 } 
 
-export const removeBookMarks = function(recipeRecieved){
+export const removeBookMarks = function(id){
   const bookmarkElIndex = state.bookmarks.findIndex(recipeObj => {
-    return recipeObj.id === recipeRecieved.id
+    return recipeObj.id === id
   })
-  if(state.recipe.id === recipeRecieved.id){
+  if(state.recipe.id === id){
     state.recipe.bookmarked = false;
     state.bookmarks.splice(bookmarkElIndex, 1)
   }

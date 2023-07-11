@@ -71,7 +71,7 @@ const controlRecipe = async function(){
     if(!model.state.recipe.bookmarked){
       model.addBookmarks(model.state.recipe);
     }else if(model.state.recipe.bookmarked){      
-      model.removeBookMarks(model.state.recipe)
+      model.removeBookMarks(model.state.recipe.id)
     }
     return recipeView.render(model.state.recipe)
   }
